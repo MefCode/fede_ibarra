@@ -123,124 +123,27 @@ document.addEventListener('DOMContentLoaded', function() {
             };
         }
         
-        // Detectar si es un dispositivo táctil
-        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+        item.addEventListener('mouseenter', function() {
+            const title = overlay.querySelector('h3');
+            const desc = overlay.querySelector('p');
+            
+            title.style.transform = 'translateY(0)';
+            title.style.opacity = '1';
+            
+            desc.style.transform = 'translateY(0)';
+            desc.style.opacity = '1';
+        });
         
-        if (isTouchDevice) {
-            // Para dispositivos táctiles, usar clic en lugar de hover
-            item.addEventListener('click', function(e) {
-                // Encontrar si hay algún elemento activo y desactivarlo
-                const activeItems = document.querySelectorAll('.portfolio-item.active');
-                activeItems.forEach(activeItem => {
-                    if (activeItem !== item) {
-                        activeItem.classList.remove('active');
-                        const activeOverlay = activeItem.querySelector('.portfolio-overlay');
-                        const activeTitle = activeOverlay.querySelector('h3');
-                        const activeDesc = activeOverlay.querySelector('p');
-                        
-                        activeTitle.style.transform = 'translateY(20px)';
-                        activeTitle.style.opacity = '0';
-                        activeDesc.style.transform = 'translateY(20px)';
-                        activeDesc.style.opacity = '0';
-                        
-                        // Retardar la desaparición del overlay para la animación
-                        setTimeout(() => {
-                            activeOverlay.style.opacity = '0';
-                            activeOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0)';
-                        }, 200);
-                    }
-                });
-                
-                // Alternar el estado activo del elemento actual
-                if (item.classList.contains('active')) {
-                    // Desactivar el elemento actual
-                    item.classList.remove('active');
-                    const title = overlay.querySelector('h3');
-                    const desc = overlay.querySelector('p');
-                    
-                    title.style.transform = 'translateY(20px)';
-                    title.style.opacity = '0';
-                    desc.style.transform = 'translateY(20px)';
-                    desc.style.opacity = '0';
-                    
-                    setTimeout(() => {
-                        overlay.style.opacity = '0';
-                        overlay.style.backgroundColor = 'rgba(0, 0, 0, 0)';
-                    }, 200);
-                } else {
-                    // Activar el elemento actual
-                    item.classList.add('active');
-                    overlay.style.opacity = '0.95';
-                    overlay.style.backgroundColor = 'rgba(245, 240, 225, 0.9)';
-                    
-                    const title = overlay.querySelector('h3');
-                    const desc = overlay.querySelector('p');
-                    
-                    title.style.transform = 'translateY(0)';
-                    title.style.opacity = '1';
-                    desc.style.transform = 'translateY(0)';
-                    desc.style.opacity = '1';
-                }
-                
-                // Prevenir la propagación del evento para evitar problemas con scrolling
-                e.stopPropagation();
-            });
+        item.addEventListener('mouseleave', function() {
+            const title = overlay.querySelector('h3');
+            const desc = overlay.querySelector('p');
             
-            // Cerrar el overlay al hacer clic fuera de los elementos
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('.portfolio-item')) {
-                    const activeItems = document.querySelectorAll('.portfolio-item.active');
-                    activeItems.forEach(activeItem => {
-                        activeItem.classList.remove('active');
-                        const activeOverlay = activeItem.querySelector('.portfolio-overlay');
-                        const activeTitle = activeOverlay.querySelector('h3');
-                        const activeDesc = activeOverlay.querySelector('p');
-                        
-                        activeTitle.style.transform = 'translateY(20px)';
-                        activeTitle.style.opacity = '0';
-                        activeDesc.style.transform = 'translateY(20px)';
-                        activeDesc.style.opacity = '0';
-                        
-                        setTimeout(() => {
-                            activeOverlay.style.opacity = '0';
-                            activeOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0)';
-                        }, 200);
-                    });
-                }
-            });
-        } else {
-            // Para dispositivos no táctiles, mantener el hover
-            item.addEventListener('mouseenter', function() {
-                const title = overlay.querySelector('h3');
-                const desc = overlay.querySelector('p');
-                
-                overlay.style.opacity = '0.95';
-                overlay.style.backgroundColor = 'rgba(245, 240, 225, 0.9)';
-                
-                title.style.transform = 'translateY(0)';
-                title.style.opacity = '1';
-                
-                desc.style.transform = 'translateY(0)';
-                desc.style.opacity = '1';
-            });
+            title.style.transform = 'translateY(20px)';
+            title.style.opacity = '0';
             
-            item.addEventListener('mouseleave', function() {
-                const title = overlay.querySelector('h3');
-                const desc = overlay.querySelector('p');
-                
-                title.style.transform = 'translateY(20px)';
-                title.style.opacity = '0';
-                
-                desc.style.transform = 'translateY(20px)';
-                desc.style.opacity = '0';
-                
-                // Retardar la desaparición del overlay para la animación
-                setTimeout(() => {
-                    overlay.style.opacity = '0';
-                    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0)';
-                }, 200);
-            });
-        }
+            desc.style.transform = 'translateY(20px)';
+            desc.style.opacity = '0';
+        });
     });
 
     // Navegación suave para los enlaces internos
