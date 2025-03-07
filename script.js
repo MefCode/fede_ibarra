@@ -1,6 +1,60 @@
 // Script para la página web de Fede Ibarra Estudio Creativo
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM cargado completamente');
+    
+    // Menú hamburguesa para móviles
+    function initMobileMenu() {
+        const menuToggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('nav');
+        
+        if (!menuToggle || !nav) {
+            console.error('No se pudo encontrar el botón del menú o la navegación');
+            return;
+        }
+        
+        console.log('Menú móvil inicializado');
+        
+        // Crear overlay para el menú móvil
+        const menuOverlay = document.createElement('div');
+        menuOverlay.className = 'menu-overlay';
+        document.body.appendChild(menuOverlay);
+        
+        // Función para activar el menú
+        function toggleMenu() {
+            console.log('Toggle menú activado');
+            menuToggle.classList.toggle('active');
+            nav.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            document.body.classList.toggle('menu-open');
+        }
+        
+        // Añadir eventos
+        menuToggle.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', toggleMenu);
+        
+        // Cerrar menú al hacer clic en un enlace
+        const navLinks = document.querySelectorAll('nav ul li a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                menuToggle.classList.remove('active');
+                nav.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.classList.remove('menu-open');
+            });
+        });
+        
+        // Forzar estilos en caso de que CSS no se cargue correctamente
+        if (window.innerWidth <= 768) {
+            menuToggle.style.display = 'flex';
+            nav.style.position = 'fixed';
+            nav.style.right = '-100%';
+        }
+    }
+    
+    // Inicializar menú inmediatamente
+    initMobileMenu();
+    
     // Actualizar el año del copyright automáticamente
     const currentYearElement = document.getElementById('current-year');
     if (currentYearElement) {
@@ -29,29 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
             logoContainer.querySelector('h1').style.display = 'block';
             logoContainer.querySelector('p').style.display = 'block';
         };
-    }
-
-    // Añadir efecto de feedback visual al botón Ver Portfolio
-    const portfolioBtn = document.querySelector('.hero-content .btn');
-    if (portfolioBtn) {
-        portfolioBtn.addEventListener('click', function(e) {
-            // Crear efecto de onda al hacer clic
-            const ripple = document.createElement('span');
-            ripple.classList.add('btn-ripple');
-            this.appendChild(ripple);
-            
-            const rect = this.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            ripple.style.left = `${x}px`;
-            ripple.style.top = `${y}px`;
-            
-            // Eliminar el efecto después de la animación
-            setTimeout(() => {
-                ripple.remove();
-            }, 600);
-        });
     }
 
     // Precargar la imagen de fondo principal
