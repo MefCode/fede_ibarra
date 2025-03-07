@@ -268,12 +268,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (aboutSection) {
         // Precargar la imagen de fondo de manera explícita
         const bgImg = new Image();
-        bgImg.src = 'IMG6.jpg';
+        bgImg.src = 'IMG8.jpg';
         
         // Aplicar la imagen de fondo directamente
         bgImg.onload = function() {
             // Asegurar que la imagen de fondo se muestre correctamente
-            aboutSection.style.backgroundImage = `url('IMG6.jpg')`;
+            aboutSection.style.backgroundImage = `url('IMG8.jpg')`;
             aboutSection.style.opacity = 1;
             
             // Efecto de aparición para el texto
@@ -301,20 +301,133 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         };
         
+        // Nuevo efecto para la imagen de "Sobre Mí"
         const aboutImage = aboutSection.querySelector('.about-image');
         
         if (aboutImage) {
-            // Usar Intersection Observer para efectos de aparición
-            const drawingObserver = new IntersectionObserver(function(entries) {
+            // Usar Intersection Observer para activar la animación cuando la imagen sea visible
+            const imageObserver = new IntersectionObserver(function(entries) {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        aboutImage.classList.add('drawing-effect');
-                        drawingObserver.unobserve(entry.target);
+                        aboutImage.classList.add('animated');
+                        setTimeout(() => {
+                            aboutImage.classList.add('parallax');
+                        }, 1500);
+                        imageObserver.unobserve(entry.target);
+                        
+                        // Iniciar efecto de paralaje 3D
+                        initParallax3D(aboutImage);
                     }
                 });
-            }, { threshold: 0.3 });
+            }, { threshold: 0.2 });
             
-            drawingObserver.observe(aboutSection);
+            imageObserver.observe(aboutImage);
+            
+            // Función para inicializar el efecto de paralaje 3D
+            function initParallax3D(element) {
+                if (window.matchMedia('(hover: hover)').matches) {
+                    const img = element.querySelector('img');
+                    
+                    // Efecto de movimiento suave al mover el ratón
+                    element.addEventListener('mousemove', e => {
+                        const rect = element.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        
+                        // Calcular rotación basada en la posición del ratón - INTENSIFICADO
+                        const rotateY = ((x / rect.width) - 0.5) * 25; // Aumentado de 10 a 25 grados
+                        const rotateX = ((y / rect.height) - 0.5) * -25; // Aumentado de 10 a 25 grados
+                        const translateZ = Math.abs((x / rect.width - 0.5) * (y / rect.height - 0.5)) * 50; // Añadir movimiento en Z
+                        
+                        element.style.setProperty('--rotateX', rotateX + 'deg');
+                        element.style.setProperty('--rotateY', rotateY + 'deg');
+                        element.style.setProperty('--translateZ', translateZ + 'px');
+                        
+                        // Efecto de iluminación basado en la posición del ratón - INTENSIFICADO
+                        const centerX = (x / rect.width) * 200 - 100; // -100% a 100%
+                        const centerY = (y / rect.height) * 200 - 100; // -100% a 100%
+                        
+                        // Sombra de luz más intensa que sigue al cursor
+                        if (img) {
+                            // Aumentar la intensidad de la sombra
+                            img.style.boxShadow = `
+                                0 20px 40px rgba(0, 0, 0, 0.4),
+                                ${centerX * 0.1}px ${centerY * 0.1}px 30px rgba(255, 215, 0, 0.35)
+                            `;
+                            
+                            // Añadir un sutil efecto de iluminación direccional
+                            const lightIntensity = Math.max(0.85, 1 - (Math.abs(centerX) + Math.abs(centerY)) / 200);
+                            img.style.filter = `sepia(0.15) contrast(1.15) brightness(${lightIntensity})`;
+                            
+                            // Movimiento adicional para la imagen dentro del contenedor
+                            img.style.transform = `
+                                translateZ(40px)
+                                translateX(${centerX * 0.03}px)
+                                translateY(${centerY * 0.03}px)
+                            `;
+                        }
+                    });
+                    
+                    // Restaurar al estado original cuando el ratón sale
+                    element.addEventListener('mouseleave', () => {
+                        element.style.setProperty('--rotateX', '0deg');
+                        element.style.setProperty('--rotateY', '0deg');
+                        element.style.setProperty('--translateZ', '0px');
+                        
+                        if (img) {
+                            img.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.25)';
+                            img.style.filter = 'sepia(0.2) contrast(1.05)';
+                            img.style.transform = 'translateZ(0)';
+                        }
+                    });
+                    
+                    // Efecto de transición inicial
+                    setTimeout(() => {
+                        if (img) {
+                            img.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                            img.style.transform = 'translateZ(20px)';
+                            
+                            setTimeout(() => {
+                                img.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                            }, 800);
+                        }
+                    }, 1000);
+                }
+            }
+            
+            // Efecto de paralaje al hacer scroll - INTENSIFICADO
+            window.addEventListener('scroll', debounce(function() {
+                if (aboutImage.classList.contains('animated')) {
+                    // Calcular la posición relativa de la sección en la ventana
+                    const rect = aboutSection.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                        const scrollFactor = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+                        const limitedFactor = Math.max(0, Math.min(1, scrollFactor));
+                        
+                        // Movimiento más dinámico al hacer scroll
+                        const img = aboutImage.querySelector('img');
+                        if (img) {
+                            // Movimiento vertical más pronunciado
+                            const verticalMove = limitedFactor * -25; // Aumentado de -15 a -25px
+                            
+                            // Añadir ligera rotación basada en scroll
+                            const scrollRotateX = limitedFactor * 5 - 2.5; // -2.5° a 2.5°
+                            const scrollRotateY = (limitedFactor - 0.5) * 10; // -5° a 5°
+                            
+                            // Aplicar transformaciones combinadas
+                            img.style.transform = `
+                                translateY(${verticalMove}px) 
+                                scale(${1 + limitedFactor * 0.08}) 
+                                rotateX(${scrollRotateX}deg) 
+                                rotateY(${scrollRotateY}deg)
+                            `;
+                            
+                            // Ajustar sombra según la posición de scroll
+                            img.style.boxShadow = `0 ${10 + limitedFactor * 20}px ${20 + limitedFactor * 20}px rgba(0, 0, 0, ${0.2 + limitedFactor * 0.2})`;
+                        }
+                    }
+                }
+            }, 10));
         }
     }
 
@@ -464,4 +577,36 @@ document.addEventListener('DOMContentLoaded', function() {
             body.style.overflow = '';
         }
     });
+
+    // Efecto de movimiento para la imagen en la sección "Sobre Mí"
+    const aboutImage = document.querySelector('.about-image img');
+    
+    if (aboutSection && aboutImage) {
+        const maxMovement = 30; // Cantidad máxima de píxeles que se moverá la imagen
+        
+        window.addEventListener('scroll', function() {
+            // Verificar si la sección está visible en la pantalla
+            const rect = aboutSection.getBoundingClientRect();
+            const isVisible = 
+                rect.top < window.innerHeight && 
+                rect.bottom > 0;
+                
+            if (isVisible) {
+                // Calcular la posición relativa de la sección en la ventana
+                const sectionProgress = 1 - (rect.top / window.innerHeight);
+                // Limitar el progreso entre 0 y 1
+                const limitedProgress = Math.max(0, Math.min(1, sectionProgress * 1.5));
+                
+                // Calcular la transformación en X e Y basada en el progreso
+                const moveX = maxMovement * (limitedProgress - 0.5) * 0.7;
+                const moveY = maxMovement * (limitedProgress - 0.5);
+                
+                // Aplicar la transformación con animación suave
+                aboutImage.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            }
+        });
+        
+        // Disparar el evento de scroll inicialmente para establecer la posición
+        window.dispatchEvent(new Event('scroll'));
+    }
 }); 

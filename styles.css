@@ -442,6 +442,10 @@ nav ul li a:hover::after {
     z-index: 1;
     opacity: 1;
     visibility: visible;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    transition: opacity 0.5s ease;
 }
 
 .about::before {
@@ -451,7 +455,7 @@ nav ul li a:hover::after {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(245, 240, 225, 0.5);
+    background-color: rgba(245, 240, 225, 0.6); /* Aumentado la opacidad para mejor contraste con IMG8 */
     z-index: -1;
 }
 
@@ -459,10 +463,12 @@ nav ul li a:hover::after {
     max-width: 1200px;
     margin: 0 auto;
     position: relative;
-    background-color: rgba(245, 240, 225, 0.7);
+    background-color: rgba(245, 240, 225, 0.3); /* Reducido de 0.5 a 0.3 para mayor transparencia */
     padding: 3rem;
     border-radius: 5px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(1px); /* Reducido de 2px a 1px para menor efecto de desenfoque */
+    border: 1px solid rgba(245, 240, 225, 0.4); /* Añadido un borde sutil */
 }
 
 .about-grid {
@@ -476,37 +482,135 @@ nav ul li a:hover::after {
     margin-bottom: 1.5rem;
     font-size: 1.1rem;
     line-height: 1.8;
-    text-shadow: 0 0 5px rgba(245, 240, 225, 0.8);
+    text-shadow: 0 0 10px rgba(245, 240, 225, 1), 0 0 5px rgba(245, 240, 225, 1); /* Mejorada la sombra del texto */
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.5s ease, transform 0.5s ease;
     color: var(--color-ink);
-    font-weight: 500;
+    font-weight: 700; /* Aumentado de 600 a 700 para mejorar contraste */
 }
 
 .about-image {
     position: relative;
+    overflow: visible;
+    padding: 20px;
+    perspective: 800px; /* Reducido de 1000px para una perspectiva más intensa */
+    transform-style: preserve-3d;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Transición más rápida y dinámica */
 }
 
 .about-image::before {
     content: "";
     position: absolute;
-    top: -20px;
-    left: -20px;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     border: 2px solid var(--color-gold);
     z-index: -1;
+    transform: translate(-20px, -20px);
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    opacity: 0;
+}
+
+.about-image::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    width: 70%;
+    height: 70%;
+    background: repeating-linear-gradient(
+        45deg,
+        var(--color-gold),
+        var(--color-gold) 2px,
+        transparent 2px,
+        transparent 8px
+    );
+    z-index: -2;
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    opacity: 0;
+}
+
+.about-image.animated::before {
+    opacity: 1;
+    animation: frameDraw 1.5s forwards cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.about-image.animated::after {
+    opacity: 0.5;
+    animation: patternFade 2s forwards ease-in-out 0.5s;
 }
 
 .about-image img {
     width: 100%;
     height: auto;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
     border: 5px solid var(--color-parchment);
     position: relative;
     display: block;
     margin: 0 auto;
+    transform: translateZ(0);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Transición más rápida */
+    filter: sepia(0.2) contrast(1.05);
+    transform-style: preserve-3d; /* Asegurar que mantenga el 3D */
+}
+
+.about-image.animated img {
+    animation: imageReveal 1.2s forwards cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.about-image:hover img {
+    transform: translateZ(40px); /* Aumentado de 20px a 40px para un efecto más profundo */
+    filter: sepia(0) contrast(1.15);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); /* Sombra más intensa */
+}
+
+@keyframes frameDraw {
+    0% {
+        clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%);
+    }
+    25% {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+    }
+    50% {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 0%);
+    }
+    75% {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    }
+    100% {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    }
+}
+
+@keyframes imageReveal {
+    0% {
+        opacity: 0.7;
+        transform: scale(0.95) translateY(10px) translateZ(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0) translateZ(20px); /* Añadido profundidad al final de la animación */
+    }
+}
+
+@keyframes patternFade {
+    0% {
+        opacity: 0;
+        transform: translate(20px, 20px);
+    }
+    100% {
+        opacity: 0.3;
+        transform: translate(0, 0);
+    }
+}
+
+/* Mejora para el efecto 3D en dispositivos que lo soportan */
+@media (hover: hover) {
+    .about-image.animated.parallax {
+        transform: perspective(800px) rotateX(var(--rotateX)) rotateY(var(--rotateY)) translateZ(var(--translateZ));
+    }
 }
 
 .section-title {
@@ -518,8 +622,9 @@ nav ul li a:hover::after {
 }
 
 .about .section-title {
-    text-shadow: 0 0 10px rgba(245, 240, 225, 0.9);
+    text-shadow: 0 0 15px rgba(245, 240, 225, 1), 0 0 8px rgba(245, 240, 225, 1); /* Mejorada la sombra del título */
     color: var(--color-ink);
+    font-weight: 700; /* Aumentado a 700 para mejor legibilidad */
 }
 
 .section-title::after {
@@ -691,24 +796,42 @@ nav ul li a:hover::after {
 
 /* Responsive adjustments */
 @media (max-width: 992px) {
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .about-image {
+        order: -1; /* Colocar la imagen primero en el orden de visualización */
+        margin-bottom: 2rem;
+    }
+    
+    .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Ajustes del footer para pantallas medianas */
     .footer-content {
         flex-direction: column;
         text-align: center;
         gap: 1.5rem;
     }
     
-    .footer-logo, .footer-copyright {
+    .footer-logo, .footer-links, .footer-copyright {
         align-items: center;
-        text-align: center;
+        justify-content: center;
         width: 100%;
     }
     
     .footer-logo {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
         margin-bottom: 1rem;
     }
     
     .footer-links {
-        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
         justify-content: center;
         margin: 1.5rem 0;
     }
@@ -723,6 +846,74 @@ nav ul li a:hover::after {
 }
 
 @media (max-width: 768px) {
+    /* Ajustes del footer para móvil */
+    .footer-content {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .footer-logo, .footer-links, .footer-copyright {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .footer-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        margin: 1.5rem 0;
+    }
+    
+    .footer-links a {
+        margin: 0.3rem 0;
+        padding: 0.3rem 0;
+        width: 100%;
+        text-align: center;
+        position: relative;
+    }
+    
+    .footer-links a::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 30px;
+        height: 1px;
+        background-color: var(--color-sepia);
+        transition: width 0.3s ease;
+    }
+    
+    .footer-links a:last-child::after {
+        display: none;
+    }
+    
+    .footer-links a:hover::after {
+        width: 60px;
+        background-color: var(--color-gold);
+    }
+    
+    .footer-copyright {
+        padding-top: 1rem;
+        border-top: 1px solid rgba(245, 240, 225, 0.2);
+    }
+    
+    /* Confirmar que la imagen en Sobre Mí aparezca primero */
+    .about-grid {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .about-image {
+        order: -1; /* Asegurar que la imagen aparezca primero */
+        margin-bottom: 2rem;
+    }
+    
+    .about-text {
+        order: 1; /* El texto aparece después */
+    }
+    
     header {
         padding: 1rem 5%;
     }
@@ -877,22 +1068,26 @@ nav ul li a:hover::after {
         grid-column: span 1;
     }
     
-    /* Ajustes específicos para móviles */
+    /* Ajustes adicionales para pantallas muy pequeñas */
+    footer {
+        padding: 2rem 5%;
+    }
+    
+    .footer-logo h3 {
+        font-size: 1.5rem;
+    }
+    
+    .footer-logo p {
+        font-size: 0.9rem;
+    }
+    
     .footer-links a {
-        margin: 0.5rem 0;
-        padding-left: 0;
-        padding-bottom: 0.5rem;
+        font-size: 0.9rem;
+        margin: 0.4rem 0;
     }
     
-    .footer-links a::before {
-        left: 50%;
-        top: auto;
-        bottom: 0;
-        transform: translateX(-50%);
-    }
-    
-    .footer-links a:hover {
-        transform: translateY(-5px);
+    .footer-copyright p {
+        font-size: 0.8rem;
     }
 }
 
