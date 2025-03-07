@@ -353,6 +353,7 @@ nav ul li a:hover::after {
     padding: 0;
     opacity: 1 !important; /* Asegurar que las imágenes siempre sean visibles */
     transform: translateY(0) !important; /* Eliminar la animación de aparición */
+    cursor: pointer; /* Añadir cursor pointer para indicar que es clickeable */
 }
 
 .portfolio-item img {
@@ -364,6 +365,50 @@ nav ul li a:hover::after {
 
 .portfolio-item:hover img {
     transform: scale(1.05);
+}
+
+/* Añadir una indicación visual para móviles de que los items son clickeables */
+@media (max-width: 768px) {
+    .portfolio-item::after {
+        content: "+";
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        width: 30px;
+        height: 30px;
+        background-color: var(--color-ink);
+        color: var(--color-parchment);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        opacity: 0.8;
+        transition: all 0.3s ease;
+        z-index: 2;
+    }
+    
+    .portfolio-item.active::after {
+        content: "×";
+        background-color: var(--color-red);
+        transform: rotate(45deg);
+    }
+    
+    /* Asegurarse de que el overlay aparezca por encima del indicador */
+    .portfolio-item .portfolio-overlay {
+        z-index: 3;
+    }
+    
+    .portfolio-item.active .portfolio-overlay {
+        opacity: 0.95 !important;
+        background-color: rgba(245, 240, 225, 0.9) !important;
+    }
+    
+    .portfolio-item.active .portfolio-overlay h3,
+    .portfolio-item.active .portfolio-overlay p {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
 }
 
 .portfolio-overlay {
@@ -387,11 +432,6 @@ nav ul li a:hover::after {
     background-repeat: no-repeat;
     opacity: 0;
     mix-blend-mode: normal;
-}
-
-.portfolio-item:hover .portfolio-overlay {
-    opacity: 0.95;
-    background-color: rgba(245, 240, 225, 0.9);
 }
 
 .portfolio-overlay h3 {
