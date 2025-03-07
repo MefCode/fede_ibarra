@@ -1008,9 +1008,257 @@
         
         /* Corrección para el video de fondo */
         @media (max-width: 768px) {
+            .hero {
+                height: 100vh !important; /* Fuerza altura completa */
+                min-height: 100vh !important; /* Asegura altura mínima */
+            }
+            
+            .hero-video-container {
+                height: 100vh !important; /* Fuerza altura completa */
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                overflow: hidden;
+            }
+            
             .hero-video-container iframe {
-                width: 150vw;
-                height: 150vh;
+                width: 300vw !important; /* Aumenta significativamente el ancho */
+                height: 300vh !important; /* Aumenta significativamente la altura */
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            
+            .hero-content {
+                padding: 0 20px; /* Añade padding lateral */
+                z-index: 5; /* Asegura que esté por encima */
+            }
+        }
+        
+        /* Mejoras para el carrusel en móviles - Solución radical */
+        @media (max-width: 768px) {
+            .portfolio {
+                padding: 80px 0 0 !important; /* Elimina padding inferior */
+            }
+            
+            #portfolio .section-title {
+                margin-bottom: 5px !important; /* Reduce margen inferior */
+            }
+            
+            .portfolio-carousel {
+                padding: 5px 0 0 !important; /* Mínimo padding superior */
+                height: calc(100vh - 130px) !important; /* Altura calculada */
+                overflow: hidden !important; /* Cambiado a hidden para evitar problemas */
+                position: relative !important;
+            }
+            
+            .swiper {
+                height: 100% !important; /* Ocupa toda la altura */
+                padding-top: 5px !important; /* Mínimo padding superior */
+                padding-bottom: 30px !important; /* Aumenta padding inferior para la paginación */
+                position: relative !important; /* Cambiado a relative */
+            }
+            
+            /* Reset completo de estilos para slides */
+            .swiper-slide {
+                width: 100% !important; /* Ancho completo */
+                height: 100% !important; /* Altura completa */
+                max-height: calc(100vh - 140px) !important; /* Altura máxima */
+                margin: 0 !important; /* Sin márgenes */
+                transform: none !important; /* Sin transformaciones */
+                filter: none !important; /* Sin filtros */
+                transition: none !important; /* Sin transiciones personalizadas */
+                border-radius: 0 !important; /* Sin bordes redondeados */
+                box-shadow: none !important; /* Sin sombras */
+                display: flex !important; /* Usa flexbox */
+                justify-content: center !important; /* Centra horizontalmente */
+                align-items: center !important; /* Centra verticalmente */
+                overflow: hidden !important; /* Oculta desbordamiento */
+            }
+            
+            /* Todos los slides tienen la misma apariencia */
+            .swiper-slide-active,
+            .swiper-slide-prev,
+            .swiper-slide-next {
+                transform: none !important;
+                filter: none !important;
+                opacity: 1 !important;
+                z-index: 1 !important;
+            }
+            
+            /* Contenedor de imagen centrado */
+            .swiper-slide-inner {
+                width: 90% !important; /* Ancho del 90% */
+                height: 90% !important; /* Altura del 90% */
+                position: relative !important;
+                border-radius: 10px !important; /* Bordes redondeados */
+                overflow: hidden !important;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important; /* Sombra */
+            }
+            
+            /* Imagen perfectamente centrada */
+            .swiper-slide img {
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: cover !important;
+                object-position: center !important;
+                display: block !important;
+                transition: none !important; /* Sin transiciones */
+            }
+            
+            /* Contenido siempre visible */
+            .portfolio-content {
+                position: absolute !important;
+                bottom: 0 !important;
+                left: 0 !important;
+                width: 100% !important;
+                padding: 20px !important;
+                background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent) !important;
+                transform: none !important;
+                opacity: 1 !important;
+                transition: none !important;
+            }
+            
+            /* Botones de navegación más visibles */
+            .swiper-button-next,
+            .swiper-button-prev {
+                top: 50% !important;
+                width: 40px !important;
+                height: 40px !important;
+                background-color: rgba(42, 42, 42, 0.9) !important;
+                color: var(--color-primary) !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                opacity: 1 !important;
+                z-index: 100 !important;
+                transform: translateY(-50%) !important;
+                border-radius: 50% !important;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) !important;
+            }
+            
+            .swiper-button-next {
+                right: 10px !important;
+            }
+            
+            .swiper-button-prev {
+                left: 10px !important;
+            }
+            
+            .swiper-button-next:after,
+            .swiper-button-prev:after {
+                font-size: 1.2rem !important;
+                font-weight: bold !important;
+            }
+            
+            /* Paginación más visible */
+            .swiper-pagination {
+                bottom: 5px !important;
+            }
+            
+            .swiper-pagination-bullet {
+                width: 10px !important;
+                height: 10px !important;
+                background-color: var(--color-light) !important;
+                opacity: 0.7 !important;
+            }
+            
+            .swiper-pagination-bullet-active {
+                background-color: var(--color-primary) !important;
+                opacity: 1 !important;
+            }
+            
+            /* Wrapper sin transformaciones */
+            .swiper-wrapper {
+                display: flex !important;
+                align-items: center !important;
+                transition-timing-function: ease-out !important;
+            }
+        }
+        
+        /* Mejoras para el formulario de contacto en móviles */
+        @media (max-width: 768px) {
+            .contact-wrapper {
+                grid-template-columns: 1fr !important; /* Una sola columna */
+                gap: 0 !important; /* Elimina espacio */
+            }
+            
+            .contact-info {
+                display: none !important; /* Oculta completamente */
+            }
+            
+            .contact-form-container {
+                padding: 30px 20px !important; /* Ajusta padding */
+                width: 100% !important; /* Ancho completo */
+                max-width: 100% !important; /* Ancho máximo */
+                border-left: 3px solid var(--color-primary) !important;
+                border-right: 3px solid var(--color-primary) !important;
+            }
+            
+            .modern-contact-form {
+                grid-template-columns: 1fr !important; /* Una sola columna */
+                gap: 15px !important; /* Reduce espacio entre campos */
+                width: 100% !important; /* Ancho completo */
+            }
+            
+            .form-floating {
+                height: 70px !important; /* Aumenta altura */
+                width: 100% !important; /* Ancho completo */
+                margin-bottom: 5px !important; /* Reduce margen */
+            }
+            
+            .form-floating:nth-child(4) {
+                height: 150px !important; /* Mantiene altura del textarea */
+            }
+            
+            .form-control {
+                width: 100% !important; /* Ancho completo */
+                padding: 25px 20px 0 !important; /* Aumenta padding */
+                font-size: 1.1rem !important; /* Aumenta tamaño de fuente */
+                border-radius: 0 !important; /* Sin bordes redondeados */
+            }
+            
+            .form-floating label {
+                top: 25px !important; /* Ajusta posición */
+                left: 20px !important; /* Ajusta posición horizontal */
+                font-size: 1.1rem !important; /* Aumenta tamaño de fuente */
+            }
+            
+            .form-control:focus ~ label,
+            .form-control:not(:placeholder-shown) ~ label {
+                top: 10px !important; /* Ajusta posición */
+                font-size: 0.85rem !important; /* Ajusta tamaño de fuente */
+            }
+            
+            .submit-btn {
+                padding: 18px 30px !important; /* Aumenta padding */
+                font-size: 1.1rem !important; /* Aumenta tamaño de fuente */
+                width: 100% !important; /* Ancho completo */
+            }
+        }
+        
+        /* Ajuste adicional para pantallas muy pequeñas */
+        @media (max-width: 576px) {
+            .portfolio-carousel {
+                height: calc(100vh - 110px) !important; /* Ajusta para pantallas pequeñas */
+            }
+            
+            .swiper-slide {
+                max-height: calc(100vh - 120px) !important; /* Altura máxima ajustada */
+            }
+            
+            .contact {
+                padding-bottom: 20px !important; /* Reduce padding inferior */
+            }
+            
+            .form-control {
+                font-size: 1rem !important; /* Ajusta tamaño de fuente */
+            }
+            
+            .form-floating label {
+                font-size: 1rem !important; /* Ajusta tamaño de fuente */
             }
         }
         
@@ -1251,7 +1499,7 @@
                         </div>
                         <div class="contact-details">
                             <h3>Email</h3>
-                            <p>info@xxxxx.com</p>
+                            <p>info@xxxxxxxxx.com</p>
                         </div>
                     </div>
                     <div class="contact-card">
@@ -1322,7 +1570,7 @@
                 </div>
                 <div class="footer-column">
                     <h3>Contacto</h3>
-                    <p>Email: info@xxxxxx.com</p>
+                    <p>Email: info@xxxxxxxxxx.com</p>
                     <p>Teléfono: +54 11 1234 5678</p>
                     <p>Buenos Aires, Argentina</p>
                 </div>
@@ -1368,10 +1616,10 @@
         
         // Inicializar Swiper
         const swiper = new Swiper('.swiper', {
-            effect: 'coverflow',
+            effect: window.innerWidth <= 768 ? 'slide' : 'coverflow',
             grabCursor: true,
             centeredSlides: true,
-            slidesPerView: 'auto',
+            slidesPerView: window.innerWidth <= 768 ? 1 : 'auto',
             coverflowEffect: {
                 rotate: 0,
                 stretch: 0,
@@ -1396,13 +1644,109 @@
             breakpoints: {
                 320: {
                     slidesPerView: 1,
-                    spaceBetween: 20
+                    spaceBetween: 0,
+                    effect: 'slide',
+                    speed: 300,
                 },
                 640: {
                     slidesPerView: 'auto',
-                    spaceBetween: 30
+                    spaceBetween: 30,
+                    effect: 'coverflow',
+                }
+            },
+            // Mejora la estabilidad en móviles
+            on: {
+                init: function() {
+                    // Ajusta el carrusel en móviles
+                    if (window.innerWidth <= 768) {
+                        this.params.effect = 'slide';
+                        this.params.slidesPerView = 1;
+                        
+                        // Envuelve las imágenes en un contenedor adicional para mejor centrado
+                        document.querySelectorAll('.swiper-slide').forEach(slide => {
+                            // Solo aplica si aún no tiene el contenedor
+                            if (!slide.querySelector('.swiper-slide-inner')) {
+                                const content = slide.innerHTML;
+                                slide.innerHTML = `<div class="swiper-slide-inner">${content}</div>`;
+                            }
+                        });
+                    } else {
+                        // Restaura el contenido original para modo web
+                        document.querySelectorAll('.swiper-slide').forEach(slide => {
+                            const inner = slide.querySelector('.swiper-slide-inner');
+                            if (inner) {
+                                slide.innerHTML = inner.innerHTML;
+                            }
+                        });
+                    }
+                },
+                resize: function() {
+                    // Actualiza el carrusel al cambiar el tamaño de la ventana
+                    this.update();
+                    
+                    // Reajusta según el tamaño de pantalla
+                    if (window.innerWidth <= 768) {
+                        this.params.effect = 'slide';
+                        this.params.slidesPerView = 1;
+                        
+                        // Asegura que todas las diapositivas tengan el contenedor interno
+                        document.querySelectorAll('.swiper-slide').forEach(slide => {
+                            if (!slide.querySelector('.swiper-slide-inner')) {
+                                const content = slide.innerHTML;
+                                slide.innerHTML = `<div class="swiper-slide-inner">${content}</div>`;
+                            }
+                        });
+                    } else {
+                        this.params.effect = 'coverflow';
+                        this.params.slidesPerView = 'auto';
+                        
+                        // Restaura el contenido original para modo web
+                        document.querySelectorAll('.swiper-slide').forEach(slide => {
+                            const inner = slide.querySelector('.swiper-slide-inner');
+                            if (inner) {
+                                slide.innerHTML = inner.innerHTML;
+                            }
+                        });
+                    }
+                    
+                    this.update();
                 }
             }
+        });
+        
+        // Asegura que las diapositivas estén correctamente configuradas según el dispositivo
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                // Fuerza actualización del carrusel
+                swiper.update();
+                
+                if (window.innerWidth <= 768) {
+                    // Configuración para móviles
+                    document.querySelectorAll('.swiper-slide').forEach(slide => {
+                        if (!slide.querySelector('.swiper-slide-inner')) {
+                            const content = slide.innerHTML;
+                            slide.innerHTML = `<div class="swiper-slide-inner">${content}</div>`;
+                        }
+                    });
+                } else {
+                    // Configuración para web
+                    document.querySelectorAll('.swiper-slide').forEach(slide => {
+                        const inner = slide.querySelector('.swiper-slide-inner');
+                        if (inner) {
+                            slide.innerHTML = inner.innerHTML;
+                        }
+                    });
+                }
+                
+                swiper.update();
+                
+                // Agregar listener para cambios de orientación en móviles
+                window.addEventListener('orientationchange', function() {
+                    setTimeout(function() {
+                        swiper.update();
+                    }, 300);
+                });
+            }, 500);
         });
 
         // Menú móvil
